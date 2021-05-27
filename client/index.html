@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Encrypt and Decrypt</title>
+</head>
+<body>
+<h3>Se envia mensaje encriptado es desencriptado en el backend</h3>
+<script src="../mylib.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<input name="message" id="message" />
+<button>Send</button>
+
+
+<script>
+
+    //replace console.log with document.write to make the behavior visible
+    console.log = (m) => {
+        document.write(`${m}<br>`);
+    };
+
+	$(document).ready(function(){
+		
+		
+	
+		$("button").click(function(){
+			var txt = $('#message').val();
+			var Encrypter = window.default;
+            const encrypter = new Encrypter();
+			var hash = encrypter.encrypt('mysecret', txt);
+			console.log('---------------');
+			console.log('Sent: ' + hash);
+			console.log('---------------');
+			$.post("/api/send", {message: hash}, function(data, status){
+				console.log('---------------');
+				console.log('Decrypt Message: ' + data);
+				console.log('---------------');
+			});
+		});
+
+	});
+</script>
+</body>
+</html>
